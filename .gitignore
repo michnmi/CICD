@@ -1,6 +1,3 @@
-# Python compiled bytecode
-*.pyc
-
 # Ansible runtime files
 *.retry
 
