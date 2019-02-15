@@ -1,0 +1,42 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: False
+  tasks:
+   - name: "Setup security group (Jenkins/SSH)"
+     ec2_group: 
+       name: "Jenkins/SSH/emoji"
+       description: "CICD Test"
+       rules:
+         - proto: tcp
+           from_port: 8080
+           to_port: 8080
+           cidr_ip: 0.0.0.0/0
+         - proto: tcp
+           from_port: 22
+           to_port: 22
+           cidr_ip: 0.0.0.0/0
+         - proto: tcp
+           from_port: 80
+           to_port: 80
+           cidr_ip: 0.0.0.0/0
+   - name: Create the Host 
+     ec2:
+       key_name: CICD
+       instance_type: t2.large
+       image: ami-09f0b8b3e41191524
+       wait: true
+       exact_count: 1
+       group: "Jenkins/SSH"
+       count_tag:
+         Name: Test
+       instance_tags:
+         Name: Test
+       region: eu-west-1
+     register: ec2
+   - name: "Print the public IP"
+     debug:
+       msg: "{{ ec2.tagged_instances[0].public_ip }}"
+   - name: "Print the private IP"
+     debug:
+       msg: "{{ ec2.tagged_instances[0].private_ip }}"
