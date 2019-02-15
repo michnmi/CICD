@@ -1,5 +1,18 @@
 ---
-- name: "docker-jenkins: Create docker container for jenkins"
+- name: "docker-jenkins: Create remote dir"
+  synchronize:
+    src: "Dockerfiles/jenkins-slave"
+    dest: "/tmp/Dockerfiles/"
+
+- name: "docker-jenkins Create docker image for jenkins slaves"
+  docker_image:
+     name: myimage
+     path: /tmp/Dockerfiles/jenkins-slave
+     dockerfile: /tmp/Dockerfiles/jenkins-slave/Dockerfile
+     push: yes
+     repository: "localhost:5000/my-jenkins-slave"
+
+  - name: "docker-jenkins: Create docker container for jenkins"
   docker_container:
     name: "jenkins-master"
     image: "jenkins/jenkins:lts"
