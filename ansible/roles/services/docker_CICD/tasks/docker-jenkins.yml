@@ -1,0 +1,23 @@
+---
+- name: "docker-jenkins: Create docker container for jenkins"
+  docker_container:
+    name: "jenkins-master"
+    image: "jenkins/jenkins:lts"
+    state: started
+    ports:
+      - "8080:8080"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+    working_dir: /var/www
+
+- name: Wait until the password file is present"
+  wait_for:
+    path: "/var/lib/docker/volumes/jenkins_home/_data/secrets/initialAdminPassword"
+
+- name: "docker-jenkins: Register password"
+  command: "cat /var/lib/docker/volumes/jenkins_home/_data/secrets/initialAdminPassword"
+  register: jenkins_password
+
+- name: "docker-jenkins: Print password"
+  debug:
+    msg: "{{ jenkins_password.stdout_lines[0] }}"
