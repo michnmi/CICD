@@ -1,0 +1,10 @@
+---
+- name: "docker-registry: Setup local registry"
+  docker_container:
+    name: "docker-registry"
+    image: "registry"
+    state: started
+    ports:
+      - "5000:5000"
+    volumes:
+      - registry_home:/images
