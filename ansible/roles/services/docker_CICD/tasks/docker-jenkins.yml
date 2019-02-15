@@ -12,7 +12,7 @@
      push: yes
      repository: "localhost:5000/my-jenkins-slave"
 
-  - name: "docker-jenkins: Create docker container for jenkins"
+- name: "docker-jenkins: Create docker container for jenkins"
   docker_container:
     name: "jenkins-master"
     image: "jenkins/jenkins:lts"
