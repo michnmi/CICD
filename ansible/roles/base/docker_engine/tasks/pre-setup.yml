@@ -1,0 +1,11 @@
+- name: "pre-setup: Get key of repository"
+  apt_key: 
+    url: "https://download.docker.com/linux/ubuntu/gpg"
+- name: "pre-setup: Add repository"
+  apt_repository:
+    repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic main stable"
+- name: "pre-setup: Install prerequisite packages"
+  package:
+    state: "{{ item['state'] | default('present') }}"
+    name: "{{ item['name'] }}"
+  loop: "{{ docker_engine_pre_packages }}"

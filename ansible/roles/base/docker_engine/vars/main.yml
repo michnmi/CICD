@@ -1,0 +1,5 @@
+---
+docker_engine_pre_packages:
+  - name: docker-ce
+  - name: python # (#19605)
+  - name: python-pip
