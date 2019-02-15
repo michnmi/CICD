@@ -1,3 +1,5 @@
 ---
 - name: "main: Install required packages"
   include_tasks: "pre-setup.yml"
+- name: "main: Make sure docker is up"
+  include_tasks: "docker-service.yml"
