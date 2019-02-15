@@ -1,0 +1,5 @@
+---
+- name: "main: Install required packages"
+  include_tasks: "pre-setup.yml"
+- name: "main: Setup docker containers for jenkins"
+  include_tasks: "docker-jenkins.yml"

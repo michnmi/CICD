@@ -1,0 +1,4 @@
+---
+docker_host_pre_packages:
+  - name: "docker"
+ansible_python_interpreter: "/usr/bin/python" # (#19605)

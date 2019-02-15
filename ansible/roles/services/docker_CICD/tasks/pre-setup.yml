@@ -1,0 +1,6 @@
+---
+- name: "pre-setup: Install prerequisite packages"
+  pip:
+    state: "{{ item['state'] | default('present') }}"
+    name: "{{ item['name'] }}"
+  loop: "{{ docker_host_pre_packages }}"

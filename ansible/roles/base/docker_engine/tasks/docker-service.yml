@@ -1,3 +1,4 @@
+---
 - name: "docker-service: Make sure docker-ce is setup"
   service:
     state: started
