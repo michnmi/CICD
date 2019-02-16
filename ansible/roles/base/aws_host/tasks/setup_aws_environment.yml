@@ -1,0 +1,36 @@
+---
+- name: "setup_aws_environment: Setup security groups"
+  ec2_group:
+    name: "{{ sg_group.name }}"
+    description: "{{ sg_group.description }}"
+    state: present
+    rules: "{{ sg_group.rules }}"
+  loop: "{{ sg_groups }}"
+  loop_control:
+    loop_var: sg_group
+
+- name: "setup_aws_environment: Setup the host(s)"
+  ec2:
+    image: "{{ ec2_host.image }}"
+    instance_tags:
+      Name: "{{ ec2_host.instance_tag }}"
+    count_tag:
+      Name: "{{ ec2_host.instance_tag }}"    
+    key_name: "{{ ec2_host.key_name }}"
+    instance_type: "{{ ec2_host.instance_type }}"
+    exact_count: "{{ ec2_host.exact_count }}"
+    group: "{{ ec2_host.group }}"
+    region: "{{ ec2_host.region }}"
+    wait: true
+  loop: "{{ ec2_hosts }}"
+  loop_control:
+    loop_var: ec2_host
+
+- ec2_instance_facts:
+    filters:
+      "tag:Name": "Test"
+  register: ec2_metadata
+
+- name: "setup_aws_environment: Print the facts (we need this to setup our local hosts file)"
+  debug:
+    msg: "private_ip:{{ ec2_metadata.instances[0].private_ip_address }} public_ip:{{ ec2_metadata.instances[0].public_ip_address }}"
