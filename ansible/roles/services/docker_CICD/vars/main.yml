@@ -6,13 +6,19 @@ ansible_python_interpreter: "/usr/bin/python" # (#19605)
 docker_containers_persistent_volume_loc: "/tmp/volumes"
 jenkins_master_persistent_volume: "/tmp/volumes/jenkins-master/jenkins_home"
 
-docker_Dockerfiles_loc: "/tmp/Dockerfiles/"
+docker_Dockerfiles_loc: "/tmp/Dockerfiles"
 
 docker_images:
   - name: "jenkins-slave-npm"
     path: "/tmp/Dockerfiles/jenkins-slave-npm"
     dockerfile: "/tmp/Dockerfiles/jenkins-slave-npm/Dockerfile"
+  - name: "jenkins-master"
+    path: "/tmp/Dockerfiles/jenkins-master"
+    dockerfile: "/tmp/Dockerfiles/jenkins-master/Dockerfile"
 
 docker_registry_port: "5000"
 docker_registry_URI: "localhost:5000"
 
+# These have to be set at execution. Next step would be to use ansible-vault (for starters)
+jenkins_master_username: ""
+jenkins_master_password: ""

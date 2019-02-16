@@ -43,7 +43,7 @@ What you need is the following:
     ```
 - Setup the host. 
     ```
-    ansible-playbook -i inventories/dev/hosts.ini -l localhost,docker_host playbooks/setup_environment.yml
+    ansible-playbook -i inventories/dev/hosts.ini -l localhost,docker_host playbooks/setup_environment.yml -e "jenkins_master_username=<username> jenkins_master_password=<password>"
     ```
   Use the `-e "ansible_ssh_private_key_file=<your_pem_file>"` if you have one. 
 - It's now ready for you. Login to `jenkins-master` at `public_IP:8080` and use the `password` that has been printed out. 
