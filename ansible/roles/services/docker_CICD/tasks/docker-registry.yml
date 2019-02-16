@@ -5,6 +5,6 @@
     image: "registry"
     state: started
     ports:
-      - "5000:5000"
+      - "{{ docker_registry_port }}:{{ docker_registry_port }}"
     volumes:
       - registry_home:/images
