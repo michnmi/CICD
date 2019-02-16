@@ -15,3 +15,4 @@ docker_images:
 
 docker_registry_port: "5000"
 docker_registry_URI: "localhost:5000"
+
