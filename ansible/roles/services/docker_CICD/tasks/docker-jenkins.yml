@@ -1,16 +1,19 @@
 ---
 - name: "docker-jenkins: Create remote dir"
   synchronize:
-    src: "Dockerfiles/jenkins-slave"
-    dest: "/tmp/Dockerfiles/"
+    src: "Dockerfiles/"
+    dest: "{{ docker_Dockerfiles_loc }}"
 
-- name: "docker-jenkins Create docker image for jenkins slaves"
+- name: "docker-jenkins: Push all required images in the local registry"
   docker_image:
-     name: myimage
-     path: /tmp/Dockerfiles/jenkins-slave
-     dockerfile: /tmp/Dockerfiles/jenkins-slave/Dockerfile
-     push: yes
-     repository: "localhost:5000/my-jenkins-slave"
+    name: "{{ docker_image.name }}"
+    path: "{{ docker_image.path }}"
+    dockerfile: "{{ docker_image.dockerfile }}"
+    push: yes
+    repository: "{{ docker_registry_URI }}/{{ docker_image.name }}"
+  loop: "{{ docker_images }}"
+  loop_control:
+    loop_var: docker_image
 
 - name: "docker-jenkins: Create docker container for jenkins"
   docker_container:
