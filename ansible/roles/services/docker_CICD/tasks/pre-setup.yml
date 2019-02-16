@@ -4,3 +4,16 @@
     state: "{{ item['state'] | default('present') }}"
     name: "{{ item['name'] }}"
   loop: "{{ docker_host_pre_packages }}"
+
+- name: "pre-setup: Create volumes dicrectory"
+  file:
+    state: directory
+    path: "{{ docker_containers_persistent_volume_loc }}"
+
+- name: "pre-setup: Create volume directory for jenkins-master"
+  file:
+    state: directory
+    path: "{{ jenkins_master_persistent_volume }}"
+    owner: 1000
+    group: 1000
+    recurse: yes
