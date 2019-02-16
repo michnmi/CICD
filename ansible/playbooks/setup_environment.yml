@@ -11,6 +11,7 @@
     - docker_engine
   vars:
     ansible_python_interpreter: "/usr/bin/python3" # (#19605)
+    ec2_metadata: "{{ hostvars['localhost']['ec2_metadata'] }}"
   tags: [setup_docker_host]
 
 - hosts: docker_hosts
