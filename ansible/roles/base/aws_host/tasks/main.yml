@@ -1,0 +1,3 @@
+---
+- name: "main: Setup the AWS environment"
+  include_tasks: "setup_aws_environment.yml"
