@@ -50,6 +50,6 @@ What you need is the following:
     Host cicd
         hostname <public_IP>
     ```
-- It's now ready for you. Login to `jenkins-master` at `public_IP:8080` and use `username` and `password` you've set above. 
+- It's now ready for you. Login to `jenkins-master` at `public_IP:8080` and use `username` and `password` you've set above. _Unfortunately_ you will have to create the `ansible` secret manually. At some point I'll implement this: [`Create credentials from groovy`](https://support.cloudbees.com/hc/en-us/articles/217708168-create-credentials-from-groovy) 
 - A pipeline for building and testing the `nodejs` app has already been setup and will be executing every 6 hours. 
 - There is a chance the `emoji` app is up and running. You can reach it at `public_IP:3000`
