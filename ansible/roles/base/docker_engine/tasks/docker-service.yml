@@ -11,3 +11,13 @@
     state: started
     name: "docker"
     enabled: yes
+  
+- name: "docker-service: Make sure we clean up every now and then"
+  cron:
+    name: "{{ cron.name }}"
+    user: "{{ cron.user }}"
+    minute: "{{ cron.minute }}"
+    job: "{{ cron.job }}"
+  loop: "{{ docker_crons }}"
+  loop_control:
+    loop_var: cron

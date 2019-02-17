@@ -3,3 +3,13 @@ docker_engine_pre_packages:
   - name: docker-ce
   - name: python # (#19605)
   - name: python-pip
+
+docker_crons:
+  - name: "Clean up old containers"
+    user: "root"
+    minute: "0"
+    job: "docker rm -v $(docker ps --filter status=exited -q"
+  - name: "Clean up old images"
+    user: "root"
+    minute: "30"
+    job: "docker rmi $(docker images --filter dangling=true -q"
