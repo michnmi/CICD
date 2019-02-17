@@ -8,7 +8,7 @@
   <version>2.150.3</version>
   <installStateName>RUNNING</installStateName>
   <numExecutors>2</numExecutors>
-  <mode>NORMAL</mode>
+  <mode>EXCLUSIVE</mode>
   <useSecurity>true</useSecurity>
   <authorizationStrategy class="hudson.security.FullControlOnceLoggedInAuthorizationStrategy">
     <denyAnonymousReadAccess>false</denyAnonymousReadAccess>
@@ -148,7 +148,7 @@
   </views>
   <primaryView>all</primaryView>
   <slaveAgentPort>50000</slaveAgentPort>
-  <label></label>
+  <label>docker</label>
   <nodeProperties/>
   <globalNodeProperties/>
 </hudson>
