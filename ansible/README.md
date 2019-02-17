@@ -46,7 +46,7 @@ What you need is the following:
     ansible-playbook -i inventories/dev/hosts.ini -l localhost,docker_host playbooks/setup_environment.yml -e "jenkins_master_username=<username> jenkins_master_password=<password>"
     ```
   Use the `-e "ansible_ssh_private_key_file=<your_pem_file>"` if you have one. 
-- It's now ready for you. Login to `jenkins-master` at `public_IP:8080` and use the `password` that has been printed out. 
+- It's now ready for you. Login to `jenkins-master` at `public_IP:8080` and use `username` and `password` you've set above. 
 - Setup a new `cloud` for `docker`
 - Setup a new template for the new `jenkins-slave` 
 - Setup a pipeline for building and testing the `nodejs` app like this 

@@ -20,6 +20,11 @@
   loop_control:
     loop_var: docker_image
 
+- name: "docker-jenkins: Push the predefined jobs and pipelines" # Jenkins AFAIK will not automatically pick them up if they differ - perhaps a restart notify? 
+  synchronize:
+    src: "jenkins_master/"
+    dest: "{{ jenkins_master_persistent_volume }}/"
+
 - name: "docker-jenkins: Create and start a docker container to act as jenkins master"
   docker_container:
     name: "jenkins-master"
