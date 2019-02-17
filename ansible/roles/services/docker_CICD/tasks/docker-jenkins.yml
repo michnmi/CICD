@@ -20,25 +20,12 @@
   loop_control:
     loop_var: docker_image
 
-- name: "docker-jenkins: Create docker container for jenkins"
+- name: "docker-jenkins: Create and start a docker container to act as jenkins master"
   docker_container:
     name: "jenkins-master"
-    image: "jenkins/jenkins:lts"
+    image: "{{ docker_registry_URI }}/jenkins-master"
     state: started
     ports:
       - "8080:8080"
     volumes:
-      - jenkins_home:/var/jenkins_home
-    working_dir: /var/www
-
-- name: Wait until the password file is present"
-  wait_for:
-    path: "/var/lib/docker/volumes/jenkins_home/_data/secrets/initialAdminPassword"
-
-- name: "docker-jenkins: Register password"
-  command: "cat /var/lib/docker/volumes/jenkins_home/_data/secrets/initialAdminPassword"
-  register: jenkins_password
-
-- name: "docker-jenkins: Print password"
-  debug:
-    msg: "{{ jenkins_password.stdout_lines[0] }}"
+      - "{{ jenkins_master_persistent_volume }}:/var/jenkins_home"
