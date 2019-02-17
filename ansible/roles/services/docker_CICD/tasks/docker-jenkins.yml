@@ -2,7 +2,12 @@
 - name: "docker-jenkins: Create remote dir"
   synchronize:
     src: "Dockerfiles/"
-    dest: "{{ docker_Dockerfiles_loc }}"
+    dest: "{{ docker_Dockerfiles_loc }}/"
+
+- name: "docker-jenkins: Setup groovy script for jenkins-master"
+  template:
+    src: "jenkins-master/security.groovy.j2"
+    dest: "{{ docker_Dockerfiles_loc }}/jenkins-master/security.groovy"
 
 - name: "docker-jenkins: Push all required images in the local registry"
   docker_image:
