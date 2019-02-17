@@ -1,7 +1,7 @@
 # CICD - ansible
 
 ## Purpose
-Here you have all the code for the project. This is WIP 
+Here you have all the code for the project.
 
 ## Pre-requisites
 ### AWS account
@@ -30,7 +30,16 @@ What you need is the following:
     $ cd ansible
     ```
 
-- Create the environment. This will output the `private` and `public` `IPs` of the `EC2` instance. 
+- You can create everything in one go. 
+    ```
+    $ ansible-playbook -i inventories/dev/hosts.ini -l localhost,docker_host playbooks/setup_environment
+    ```
+    You will have to use though, `-e` with the following variables: 
+    `jenkins_master_username` and `jenkins_master_password` that you want. 
+    `ansible_ssh_private_key_file` which is the location of your `pem` file, should you be connecting to the `EC2` instances, that way
+    `emoji_build_version` which if you're setting this up for the first time, it will be `1`.
+
+- You can create just the environment. This will output the `private` and `public` `IPs` of the `EC2` instance. 
     ```
     $ ansible-playbook -i inventories/dev/hosts.ini -l localhost playbooks/setup_environment.yml --skip-tags setup_docker_host,setup_node_app
     ```
@@ -41,10 +50,6 @@ What you need is the following:
     Host cicd
         hostname <public_IP>
     ```
-- Setup the host. 
-    ```
-    ansible-playbook -i inventories/dev/hosts.ini -l localhost,docker_host playbooks/setup_environment.yml -e "jenkins_master_username=<username> jenkins_master_password=<password> emoji_build_version=<BUILD_VERSION>"
-    ```
-  Use the `-e "ansible_ssh_private_key_file=<your_pem_file>"` if you have one. 
 - It's now ready for you. Login to `jenkins-master` at `public_IP:8080` and use `username` and `password` you've set above. 
-- A pipeline for building and testing the `nodejs` app has already been setup.
+- A pipeline for building and testing the `nodejs` app has already been setup and will be executing every 6 hours. 
+- There is a chance the `emoji` app is up and running. You can reach it at `public_IP:3000`
