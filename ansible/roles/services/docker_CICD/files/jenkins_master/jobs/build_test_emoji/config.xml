@@ -13,6 +13,17 @@
   <keepDependencies>false</keepDependencies>
   <properties>
     <org.jenkinsci.plugins.workflow.job.properties.DisableConcurrentBuildsJobProperty/>
+    <org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
+      <triggers>
+        <hudson.triggers.TimerTrigger>
+          <spec>0 H/6 * * *</spec>
+        </hudson.triggers.TimerTrigger>
+        <hudson.triggers.SCMTrigger>
+          <spec>H/2 * * * *</spec>
+          <ignorePostCommitHooks>false</ignorePostCommitHooks>
+        </hudson.triggers.SCMTrigger>
+      </triggers>
+    </org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
   </properties>
   <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.63">
     <script>build_ver = &apos;0&apos;
@@ -48,14 +59,31 @@ pipeline {
                 sh &apos;if [ -d &quot;emoji-search&quot; ];then rm -rf emoji-search; else mkdir emoji-search;fi&apos;
                 dir(&quot;emoji-search&quot;) {
                     checkout([$class: &apos;GitSCM&apos;, branches: [[name: build_ver ]],
-     userRemoteConfigs: [[url: &apos;https://github.com/ahfarmer/emoji-search.git&apos;]]])
-                sh &apos;env&apos;
-                script {
-                    env
-                }
+                    userRemoteConfigs: [[url: &apos;https://github.com/ahfarmer/emoji-search.git&apos;]]]
+                    )
                 sh &apos;cp /var/jenkins_home/jobs/build_test_emoji/Dockerfile .&apos;
                 sh &quot;docker build -t localhost:5000/node-emoji:$BUILD_NUMBER .&quot;
                 sh &quot;docker push localhost:5000/node-emoji:$BUILD_NUMBER&quot;
+                }
+            }
+        }
+        stage(&apos;Deploy container in DEV&apos;) {
+            agent { label &apos;ansible&apos; }
+            steps {
+                git url: &apos;https://github.com/michnmi/CICD.git&apos;
+                // It seems that ansiblePlaybook has a much better way of handling the creds. I 'll use it next time'
+                withCredentials([sshUserPrivateKey(keyFileVariable: &apos;KEY&apos;, credentialsId: &apos;ansible&apos;)]) {
+                    sh &quot;cp $KEY ansible/CICD.pem&quot;
+                    sh &quot;chmod 400 ansible/CICD.pem&quot;
+                }
+                sh &quot;echo \&quot;[docker_hosts]\n`basename --suffix=:8080 $JENKINS_URL` ansible_user=ubuntu\&quot; &gt; ansible/inventories/dev/hosts.ini&quot;
+                dir(&quot;ansible&quot;) {
+                    ansiblePlaybook(
+                        inventory: &apos;inventories/dev/hosts.ini&apos;,
+                        limit: &apos;docker_hosts&apos;,
+                        playbook: &apos;playbooks/setup_environment.yml&apos;,
+                        extras: &apos;--tags setup_node_app -e &quot;ansible_ssh_private_key_file=CICD.pem emoji_build_version=$BUILD_NUMBER&quot;&apos;
+                        )
                 }
             }
         }
