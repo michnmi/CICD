@@ -1,0 +1,4 @@
+---
+- name: "main: Deploy container"
+  include_tasks: "setup_container.yml"
+  
