@@ -3,3 +3,14 @@ ansible_ssh_private_key_file: ""
 
 docker_registry_port: "5000"
 docker_registry_URI: "localhost:5000"
+
+ec2_hosts:
+  - name: "main_host"
+    description: "Test CICD"
+    instance_tag: "Test"
+    image: ami-09f0b8b3e41191524
+    key_name: CICD
+    instance_type: t2.large # We need this size to spin up all the containers
+    exact_count: 1
+    group: ['jenkins', 'ssh', 'emoji_npm'] # This needs to be a flat list in the invocation during the role. For now it's OK.
+    region: "eu-west-1"
