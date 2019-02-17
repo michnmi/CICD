@@ -3,7 +3,7 @@
   lineinfile:
     path: "/lib/systemd/system/docker.service"
     regex: "^ExecStart=*"
-    line: "ExecStart=/usr/bin/dockerd -H fd:// -H tcp://{{ ec2_metadata.instances[0].private_ip_address }}:2375"
+    line: "ExecStart=/usr/bin/dockerd -H fd://"
   notify: "Restart docker service and reload daemon"
 
 - name: "docker-service: Make sure docker-ce is setup"

@@ -76,10 +76,11 @@
       </templates>
       <dockerApi>
         <dockerHost plugin="docker-commons@1.13">
-          <uri>tcp://172.31.6.118:2375</uri>
+          <uri>unix:///var/run/docker.sock</uri>
         </dockerHost>
-        <connectTimeout>60</connectTimeout>
-        <readTimeout>60</readTimeout>
+        <connectTimeout>10</connectTimeout>
+        <readTimeout>10</readTimeout>
+        <hostname>172.31.6.118</hostname>
       </dockerApi>
       <containerCap>3</containerCap>
       <exposeDockerHost>false</exposeDockerHost>
