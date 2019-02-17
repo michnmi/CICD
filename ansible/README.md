@@ -47,12 +47,10 @@ What you need is the following:
     ```
   Use the `-e "ansible_ssh_private_key_file=<your_pem_file>"` if you have one. 
 - It's now ready for you. Login to `jenkins-master` at `public_IP:8080` and use `username` and `password` you've set above. 
-- Setup a new `cloud` for `docker`
-- Setup a new template for the new `jenkins-slave` 
 - Setup a pipeline for building and testing the `nodejs` app like this 
     ```
     pipeline {
-     agent { label 'testing' }
+     agent { label 'npm' }
      stages {
           stage('Checkout') {
                steps {
