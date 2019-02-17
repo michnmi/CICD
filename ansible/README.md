@@ -32,7 +32,7 @@ What you need is the following:
 
 - Create the environment. This will output the `private` and `public` `IPs` of the `EC2` instance. 
     ```
-    $ ansible-playbook -i inventories/dev/hosts.ini -l localhost playbooks/setup_environment.yml --skip-tags setup_docker_host
+    $ ansible-playbook -i inventories/dev/hosts.ini -l localhost playbooks/setup_environment.yml --skip-tags setup_docker_host,setup_node_app
     ```
 
 - Use the `public_IP` so you can connect to the host. I usually edit the `.ssh/config` file
@@ -43,29 +43,8 @@ What you need is the following:
     ```
 - Setup the host. 
     ```
-    ansible-playbook -i inventories/dev/hosts.ini -l localhost,docker_host playbooks/setup_environment.yml -e "jenkins_master_username=<username> jenkins_master_password=<password>"
+    ansible-playbook -i inventories/dev/hosts.ini -l localhost,docker_host playbooks/setup_environment.yml -e "jenkins_master_username=<username> jenkins_master_password=<password> emoji_build_version=<BUILD_VERSION>"
     ```
   Use the `-e "ansible_ssh_private_key_file=<your_pem_file>"` if you have one. 
 - It's now ready for you. Login to `jenkins-master` at `public_IP:8080` and use `username` and `password` you've set above. 
-- Setup a pipeline for building and testing the `nodejs` app like this 
-    ```
-    pipeline {
-     agent { label 'npm' }
-     stages {
-          stage('Checkout') {
-               steps {
-                    git url: 'https://github.com/ahfarmer/emoji-search.git'
-               }
-          }
-          stage('install') {
-               steps {
-                   sh 'npm install'
-               }
-          }
-          stage('test') {
-               steps {
-                   sh &'CI=true npm test'
-               }
-          }
-     }
-    ```
+- A pipeline for building and testing the `nodejs` app has already been setup.

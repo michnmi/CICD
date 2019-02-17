@@ -21,3 +21,9 @@
   vars:
     ec2_metadata: "{{ hostvars['localhost']['ec2_metadata'] }}"
   tags: [setup_docker_host]
+
+- hosts: docker_hosts
+  become: yes
+  roles:
+    - emoji_host
+  tags: [setup_node_app]

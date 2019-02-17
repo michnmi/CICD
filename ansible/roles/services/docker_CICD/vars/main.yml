@@ -19,9 +19,6 @@ docker_images:
     path: "/tmp/Dockerfiles/jenkins-master"
     dockerfile: "/tmp/Dockerfiles/jenkins-master/Dockerfile"
 
-docker_registry_port: "5000"
-docker_registry_URI: "localhost:5000"
-
 # These have to be set at execution. Next step would be to use ansible-vault (for starters)
 jenkins_master_username: ""
 jenkins_master_password: ""

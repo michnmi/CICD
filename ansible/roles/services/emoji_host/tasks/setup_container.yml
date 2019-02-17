@@ -1,0 +1,8 @@
+---
+- name: "setup_container: Create and start the emoji docker container"
+  docker_container:
+    name: "node-emoji"
+    image: "{{ docker_registry_URI }}/node-emoji:{{ emoji_build_version }}"
+    state: started
+    ports:
+      - "3000:3000"
