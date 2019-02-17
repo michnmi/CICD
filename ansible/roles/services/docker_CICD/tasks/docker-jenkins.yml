@@ -9,6 +9,11 @@
     src: "jenkins-master/security.groovy.j2"
     dest: "{{ docker_Dockerfiles_loc }}/jenkins-master/security.groovy"
 
+- name: "docker-jenkins: Setup main config.xml script for jenkins-master"
+  template:
+    src: "jenkins-master/config.xml.j2"
+    dest: "{{ docker_Dockerfiles_loc }}/jenkins-master/config.xml"
+
 - name: "docker-jenkins: Push all required images in the local registry"
   docker_image:
     name: "{{ docker_image.name }}"
@@ -20,7 +25,7 @@
   loop_control:
     loop_var: docker_image
 
-- name: "docker-jenkins: Push the predefined jobs and pipelines as well as the main config.xml" # Jenkins AFAIK will not automatically pick them up if they differ - perhaps a restart notify? 
+- name: "docker-jenkins: Push the predefined jobs and pipelines" # Jenkins AFAIK will not automatically pick them up if they differ - perhaps a restart notify? 
   synchronize:
     src: "jenkins_master/"
     dest: "{{ jenkins_master_persistent_volume }}/"

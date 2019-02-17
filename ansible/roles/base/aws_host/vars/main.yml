@@ -21,15 +21,3 @@ sg_groups:
         from_port: 3000
         to_port: 3000
         cidr_ip: 0.0.0.0/0
-
-# Most of these should be inventory variables , but for now we're OK.
-ec2_hosts:
-  - name: "main_host"
-    description: "Test CICD"
-    instance_tag: "Test"
-    image: ami-09f0b8b3e41191524
-    key_name: CICD
-    instance_type: t2.large # We need this size to spin up all the containers
-    exact_count: 1
-    group: ['jenkins', 'ssh', 'emoji_npm']
-    region: "eu-west-1"

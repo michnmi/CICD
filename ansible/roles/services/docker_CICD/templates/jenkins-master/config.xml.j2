@@ -125,7 +125,7 @@
         </dockerHost>
         <connectTimeout>10</connectTimeout>
         <readTimeout>10</readTimeout>
-        <hostname>172.31.6.118</hostname>
+        <hostname>{{ ec2_metadata.instances[0].private_ip_address }}</hostname>
       </dockerApi>
       <containerCap>3</containerCap>
       <exposeDockerHost>false</exposeDockerHost>
