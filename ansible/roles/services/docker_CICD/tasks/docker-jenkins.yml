@@ -32,7 +32,7 @@
 
 - name: "docker-jenkins: Replace the entry in the build_test_emoji for the ansible inventory"
   replace:
-    path: "{{ jenkins_master_persistent_volume }}/jobs/built_test_emoji/config.xml"
+    path: "{{ jenkins_master_persistent_volume }}/jobs/build_test_emoji/config.xml"
     regexp: '\`basename --suffix=:8080 \$JENKINS_URL\`'
     replace: "{{ ec2_metadata.results[0].tagged_instances[0].public_ip }}"
   
