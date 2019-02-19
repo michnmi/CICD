@@ -69,7 +69,10 @@ In real life, I'd never use `Jenkins` for the deployments. Jenkins knows (and ri
 
 Right... I would have a `CA` built that would be responsible for creating and authenticating certs. `Jenkins` would not have `username` and `password` methods, only `CN` reading. And yes, I would have setup everything to use `https`. 
 
-9. Even though this is a `dev` environment, a _smoke test_ (i.e. a `curl` command) _could_ also be used in the end of the deployment. 
+9. _What about `smoke` tests_?
+
+Even though this is a `dev` environment, a _smoke test_ (i.e. a `curl` command) _could_ also be used in the end of the deployment. It would however be very plain. 
+
 ## Structure
 ___
 ### `README.md`

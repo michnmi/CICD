@@ -30,26 +30,24 @@ What you need is the following:
     $ cd ansible
     ```
 
-- You can create everything in one go. 
+- I suggest you just create the AWS env first, since you'll need the public IP on your local `~/.ssh.config`. It will be output during the `play`.
     ```
-    $ ansible-playbook -i inventories/dev/hosts.ini -l localhost,docker_host playbooks/setup_environment
+    $ ansible-playbook -i inventories/dev/hosts.ini -l localhost playbooks/setup_environment --skip-tags setup_docker_host,setup_node_app
     ```
-    You will have to use though, `-e` with the following variables: 
-    `jenkins_master_username` and `jenkins_master_password` that you want. 
-    `ansible_ssh_private_key_file` which is the location of your `pem` file, should you be connecting to the `EC2` instances, that way
-    `emoji_build_version` which if you're setting this up for the first time, it will be `1`.
-
-- You can create just the environment. This will output the `private` and `public` `IPs` of the `EC2` instance. 
-    ```
-    $ ansible-playbook -i inventories/dev/hosts.ini -l localhost playbooks/setup_environment.yml --skip-tags setup_docker_host,setup_node_app
-    ```
-
 - Use the `public_IP` so you can connect to the host. I usually edit the `.ssh/config` file
     ```
     $ cat /home/micham07/.ssh/config 
     Host cicd
         hostname <public_IP>
     ```
+- Now (and from now on) you can execute the `playbook` with the tags you care about. I suggest you just stick to the `docker_CICD` role in the beginning
+    ```
+    $ ansible-playbook -i inventories/dev/hosts.ini -l localhost,docker_hosts playbooks/setup_environment --skip-tags setup_node_app
+    ```
+    You will have to use though, `-e` with the following variables: 
+    `jenkins_master_username` and `jenkins_master_password` that you want. 
+    `ansible_ssh_private_key_file` which is the location of your `pem` file, should you be connecting to the `EC2` instances, that way.
+
 - It's now ready for you. Login to `jenkins-master` at `public_IP:8080` and use `username` and `password` you've set above. _Unfortunately_ you will have to create the `ansible` secret manually. At some point I'll implement this: [`Create credentials from groovy`](https://support.cloudbees.com/hc/en-us/articles/217708168-create-credentials-from-groovy) 
 - A pipeline for building and testing the `nodejs` app has already been setup and will be executing every 6 hours. 
-- There is a chance the `emoji` app is up and running. You can reach it at `public_IP:3000`
+- When the `emoji` app is up and running. You can reach it at `public_IP:3000`

@@ -9,11 +9,6 @@
     src: "jenkins-master/security.groovy.j2"
     dest: "{{ docker_Dockerfiles_loc }}/jenkins-master/security.groovy"
 
-- name: "docker-jenkins: Setup main config.xml script for jenkins-master"
-  template:
-    src: "jenkins-master/config.xml.j2"
-    dest: "{{ docker_Dockerfiles_loc }}/jenkins-master/config.xml"
-
 - name: "docker-jenkins: Push all required images in the local registry"
   docker_image:
     name: "{{ docker_image.name }}"
@@ -36,6 +31,12 @@
     regexp: '\`basename --suffix=:8080 \$JENKINS_URL\`'
     replace: "{{ ec2_metadata.results[0].tagged_instances[0].public_ip }}"
   
+- name: "docker-jenkins: Setup main config.xml script for jenkins-master"
+  template:
+    src: "jenkins-master/config.xml.j2"
+    dest: "{{ jenkins_master_persistent_volume }}/config.xml"
+    owner: 1000
+    group: 1000
 
 - name: "docker-jenkins: Create and start a docker container to act as jenkins master"
   docker_container:
