@@ -30,6 +30,13 @@
     src: "jenkins_master/"
     dest: "{{ jenkins_master_persistent_volume }}/"
 
+- name: "docker-jenkins: Replace the entry in the build_test_emoji for the ansible inventory"
+  replace:
+    path: "{{ jenkins_master_persistent_volume }}/jobs/built_test_emoji/config.xml"
+    regexp: '\`basename --suffix=:8080 \$JENKINS_URL\`'
+    replace: "{{ ec2_metadata.results[0].tagged_instances[0].public_ip }}"
+  
+
 - name: "docker-jenkins: Create and start a docker container to act as jenkins master"
   docker_container:
     name: "jenkins-master"
